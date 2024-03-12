@@ -1,0 +1,32 @@
+class Solution:
+    def shortestSubstrings(self, arr: List[str]) -> List[str]:
+        ans=[]
+        poss=[]
+        leng=0
+        b=False
+        t=""
+        for i in range(len(arr)):
+            leng=0
+            while leng != len(arr[i]):
+                leng+=1
+                for j in range(len(arr[i])):
+                    t=arr[i][j:j+leng]
+                    b=False
+                    for s in range(len(arr)):
+                        if s == i:
+                            continue
+                        if t in arr[s]:
+                            b=True
+                    if b == False:
+                        if not poss:
+                            poss.append(t)
+                        if t<poss[0]:
+                            poss[0] = t
+
+                if poss:
+                    ans.append(poss[0])
+                    poss.clear()
+                    break
+                if (leng == len(arr[i])) and (len(ans) == i):
+                    ans.append("")
+        return ans
