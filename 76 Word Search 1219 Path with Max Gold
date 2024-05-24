@@ -1,0 +1,45 @@
+#76 Word Search
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        roww=[1,-1,0,0]
+        coll=[0,0,-1,1]
+        boo=False
+        def dfs(x, y, word):
+            #print(word)
+            res=False
+            if x < 0 or x >= len(board) or y < 0 or y >= len(board[0]) or board[x][y] == 0:
+                return False
+            temp = board[x][y]
+            board[x][y] = ""
+            if temp == word[0]:
+                if len(word) == 1:
+                    return True
+                res = dfs(x+1, y, word[1:]) or dfs(x-1, y, word[1:]) or dfs(x, y-1, word[1:]) or dfs(x, y+1, word[1:])
+            board[x][y] = temp #replace the value after recurring
+            return res
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if dfs(i, j, word):
+                    return True
+        return False
+
+
+#1219 Path w/ Max Gold
+class Solution:
+    roww=[1,-1,0,0]
+    coll=[0,0,-1,1]
+    def getMaximumGold(self, grid: List[List[int]]) -> int:
+        def dfs(x, y):
+            if x < 0 or x >= len(grid) or y < 0 or y >= len(grid[0]) or grid[x][y] == 0:
+                return 0
+            temp = grid[x][y] #save the value for backtracking
+            grid[x][y]=0
+            maxx = max(dfs(x+1, y), dfs(x-1,y),dfs(x,y-1), dfs(x,y+1))       
+            grid[x][y] = temp #replace the value after recurring
+            return temp+maxx
+        maxx=0
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] != 0:         
+                    maxx = max(maxx, dfs(i, j))
+        return maxx
